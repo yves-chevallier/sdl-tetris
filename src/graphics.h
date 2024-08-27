@@ -1,4 +1,4 @@
-#include "definitions.h"
+#pragma once
 
 int init_graphics();
 void clear_screen();

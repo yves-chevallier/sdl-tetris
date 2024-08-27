@@ -1,3 +1,5 @@
+#pragma once
+
 int listen_for_input(int game_over);
 
 enum InputEvent {

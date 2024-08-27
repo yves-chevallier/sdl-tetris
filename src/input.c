@@ -2,8 +2,10 @@
 #include "definitions.h"
 #include <SDL_keycode.h>
 
-static int handle_key_down(SDL_Keycode key_code) {
-  switch (key_code) {
+static int handle_key_down(SDL_Keycode key_code)
+{
+  switch (key_code)
+  {
   case SDLK_ESCAPE:
     return QUIT;
   case SDLK_LEFT:
@@ -24,17 +26,16 @@ static int handle_key_down(SDL_Keycode key_code) {
   return ANY_INPUT;
 }
 
-int listen_for_input(int game_over) {
+int listen_for_input(int game_over)
+{
   SDL_Event event;
 
-  while (SDL_PollEvent(&event)) {
-    if (event.type == SDL_QUIT) {
+  while (SDL_PollEvent(&event))
+  {
+    if (event.type == SDL_QUIT)
       return QUIT;
-    }
-    if (event.type == SDL_KEYDOWN) {
+    if (event.type == SDL_KEYDOWN)
       return handle_key_down(event.key.keysym.sym);
-    }
   }
-
   return NO_INPUT;
 }

@@ -1,5 +1,5 @@
-#include "definitions.h"
+#pragma once
 
-int8_t game_loop();
-int8_t init_game();
-int8_t terminate_game();
+int game_loop();
+int init_game();
+int terminate_game();

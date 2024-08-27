@@ -1,5 +1,6 @@
 #include "graphics.h"
-
+#include "definitions.h"
+#include <stdio.h>
 #define WIN_TITLE "Tetris"
 
 #ifdef __ENSCRIPTEN__
@@ -22,14 +23,17 @@ static SDL_Color Gray = {0xcc, 0xcc, 0xcc};
 static TTF_Font *Font_18;
 static TTF_Font *Font_32;
 
-static int init_fonts() {
-  if (TTF_Init() != 0) {
+static int init_fonts()
+{
+  if (TTF_Init() != 0)
+  {
     SDL_LogError(0, "error initializing TTF: %s\\n", TTF_GetError());
     return -1;
   };
 
   Font_18 = TTF_OpenFont(FONT_PATH, 18);
-  if (!Font_18) {
+  if (!Font_18)
+  {
     SDL_LogError(0, "error opening font 18 %s\n%s\\n", FONT_PATH,
                  TTF_GetError());
     TTF_Quit();
@@ -37,7 +41,8 @@ static int init_fonts() {
   }
 
   Font_32 = TTF_OpenFont(FONT_PATH, 32);
-  if (!Font_32) {
+  if (!Font_32)
+  {
     SDL_LogError(0, "error opening font 32 %s\n%s\\n", FONT_PATH,
                  TTF_GetError());
     TTF_CloseFont(Font_18);
@@ -48,8 +53,10 @@ static int init_fonts() {
   return 0;
 }
 
-int init_graphics() {
-  if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+int init_graphics()
+{
+  if (SDL_Init(SDL_INIT_VIDEO) != 0)
+  {
     SDL_LogError(0, "error initializing SDL: %s\\n", SDL_GetError());
     return -1;
   }
@@ -57,14 +64,16 @@ int init_graphics() {
   win = SDL_CreateWindow(WIN_TITLE, SDL_WINDOWPOS_CENTERED,
                          SDL_WINDOWPOS_CENTERED, WIN_WIDTH, WIN_HEIGHT, 0);
 
-  if (!win) {
+  if (!win)
+  {
     SDL_LogError(0, "error creating window: %s\n", SDL_GetError());
     SDL_Quit();
     return -1;
   }
 
   rend = SDL_CreateRenderer(win, -1, SDL_RENDERER_PRESENTVSYNC);
-  if (!rend) {
+  if (!rend)
+  {
     SDL_LogError(0, "error creating renderer: %s\n", SDL_GetError());
     SDL_DestroyWindow(win);
     SDL_Quit();
@@ -73,7 +82,8 @@ int init_graphics() {
 
   SDL_CreateRGBSurface(0, WIN_WIDTH, WIN_HEIGHT, 32, 0, 0, 0, 0);
 
-  if (init_fonts() != 0) {
+  if (init_fonts() != 0)
+  {
     SDL_DestroyWindow(win);
     SDL_Quit();
     return -1;
@@ -82,7 +92,8 @@ int init_graphics() {
   return 0;
 }
 
-static void render_right_text(const char *text, int y, TTF_Font *Font) {
+static void render_right_text(const char *text, int y, TTF_Font *Font)
+{
   SDL_Surface *surface = TTF_RenderText_Solid(Font, text, Gray);
   SDL_Texture *texture = SDL_CreateTextureFromSurface(rend, surface);
 
@@ -96,9 +107,10 @@ static void render_right_text(const char *text, int y, TTF_Font *Font) {
 
   SDL_FreeSurface(surface);
   SDL_DestroyTexture(texture);
-};
+}
 
-static void render_score(int score, int level) {
+static void render_score(int score, int level)
+{
   char score_str[SCORE_SIZE];
   snprintf(score_str, SCORE_SIZE, "%0*d", SCORE_SIZE - 1, score);
 
@@ -112,7 +124,8 @@ static void render_score(int score, int level) {
   render_right_text(level_str, BLOCK_SIZE * 7, Font_32);
 }
 
-static void render_game_over_text(const char *text, int y, TTF_Font *Font) {
+static void render_game_over_text(const char *text, int y, TTF_Font *Font)
+{
   SDL_Surface *surface = TTF_RenderText_Solid(Font, text, White);
   SDL_Texture *texture = SDL_CreateTextureFromSurface(rend, surface);
 
@@ -128,7 +141,8 @@ static void render_game_over_text(const char *text, int y, TTF_Font *Font) {
   SDL_DestroyTexture(texture);
 }
 
-void render_game_over_message(int score) {
+void render_game_over_message(int score)
+{
   char score_str[SCORE_SIZE];
   snprintf(score_str, SCORE_SIZE, "%i", score);
 
@@ -141,7 +155,8 @@ void render_game_over_message(int score) {
   SDL_RenderPresent(rend);
 }
 
-void draw_block(int x, int y, int color) {
+void draw_block(int x, int y, int color)
+{
   SDL_Rect outer;
   SDL_Rect inner;
 
@@ -169,17 +184,20 @@ void draw_block(int x, int y, int color) {
   SDL_RenderFillRect(rend, &inner);
 }
 
-void clear_screen() {
+void clear_screen()
+{
   SDL_SetRenderDrawColor(rend, 0, 0, 0, 0);
   SDL_RenderClear(rend);
 }
 
-void render_frame(int score, int level) {
+void render_frame(int score, int level)
+{
   render_score(score, level);
   SDL_RenderPresent(rend);
 }
 
-void release_resources() {
+void release_resources()
+{
   SDL_DestroyRenderer(rend);
   SDL_DestroyWindow(win);
 
